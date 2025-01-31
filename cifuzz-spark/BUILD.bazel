@@ -1,0 +1,89 @@
+#cifuzz:build-template:begin
+#cc_fuzz_test(
+#    name = "{{ .FuzzTestName }}",
+#    srcs = [
+#        "{{ .FileName }}",
+#    ],
+#    corpus = glob(
+#        ["{{ .FuzzTestName }}_inputs/**"],
+#        allow_empty = True,
+#    ) + select({
+#        "@cifuzz//:collect_coverage": glob([".{{ .FuzzTestName }}_cifuzz_corpus/**"], allow_empty = True),
+#        "//conditions:default": [],
+#    }),
+#    deps = [
+#        "@cifuzz",
+#        "//:slog_cc",
+#    ],
+#)
+#cifuzz:build-template:end
+
+load("@rules_fuzzing//fuzzing:cc_defs.bzl", "cc_fuzz_test")
+cc_fuzz_test(
+    name = "fuzz_CreateSlogTraceSubscriber_1",
+    srcs = [
+        "fuzz_CreateSlogTraceSubscriber_1.cpp",
+    ],
+    corpus = glob(
+        ["fuzz_CreateSlogTraceSubscriber_1_inputs/**"],
+        allow_empty = True,
+    ) + select({
+        "@cifuzz//:collect_coverage": glob([".fuzz_CreateSlogTraceSubscriber_1_cifuzz_corpus/**"], allow_empty = True),
+        "//conditions:default": [],
+    }),
+    deps = [
+        "@cifuzz",
+        "//:slog_cc",
+    ],
+)
+cc_fuzz_test(
+    name = "fuzz_SlogPrinter_debugString",
+    srcs = [
+        "fuzz_SlogPrinter_debugString.cpp",
+    ],
+    corpus = glob(
+        ["fuzz_SlogPrinter_debugString_inputs/**"],
+        allow_empty = True,
+    ) + select({
+        "@cifuzz//:collect_coverage": glob([".fuzz_SlogPrinter_debugString_cifuzz_corpus/**"], allow_empty = True),
+        "//conditions:default": [],
+    }),
+    deps = [
+        "@cifuzz",
+        "//:slog_cc",
+    ],
+)
+cc_fuzz_test(
+    name = "fuzz_SlogPrinter_jsonString",
+    srcs = [
+        "fuzz_SlogPrinter_jsonString.cpp",
+    ],
+    corpus = glob(
+        ["fuzz_SlogPrinter_jsonString_inputs/**"],
+        allow_empty = True,
+    ) + select({
+        "@cifuzz//:collect_coverage": glob([".fuzz_SlogPrinter_jsonString_cifuzz_corpus/**"], allow_empty = True),
+        "//conditions:default": [],
+    }),
+    deps = [
+        "@cifuzz",
+        "//:slog_cc",
+    ],
+)
+cc_fuzz_test(
+    name = "fuzz_SlogEvent_operator",
+    srcs = [
+        "fuzz_SlogEvent_operator.cpp",
+    ],
+    corpus = glob(
+        ["fuzz_SlogEvent_operator_inputs/**"],
+        allow_empty = True,
+    ) + select({
+        "@cifuzz//:collect_coverage": glob([".fuzz_SlogEvent_operator_cifuzz_corpus/**"], allow_empty = True),
+        "//conditions:default": [],
+    }),
+    deps = [
+        "@cifuzz",
+        "//:slog_cc",
+    ],
+)
