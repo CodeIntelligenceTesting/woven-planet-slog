@@ -46,3 +46,4 @@ build-system: bazel
 
 ## Style for CI Fuzz.
 #style: plain
+build-jobs: 0
