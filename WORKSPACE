@@ -1,6 +1,47 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
+    name = "org_chromium_sysroot_linux_x64",
+    build_file_content = """
+filegroup(
+  name = "sysroot",
+  srcs = glob(["*/**"]),
+  visibility = ["//visibility:public"],
+)
+""",
+    sha256 = "84656a6df544ecef62169cfe3ab6e41bb4346a62d3ba2a045dc5a0a2ecea94a3",
+    urls = ["https://commondatastorage.googleapis.com/chrome-linux-sysroot/toolchain/2202c161310ffde63729f29d27fe7bb24a0bc540/debian_stretch_amd64_sysroot.tar.xz"],
+)
+
+http_archive(
+    name = "toolchains_llvm",
+    sha256 = "b7cd301ef7b0ece28d20d3e778697a5e3b81828393150bed04838c0c52963a01",
+    strip_prefix = "toolchains_llvm-0.10.3",
+    canonical_id = "0.10.3",
+    url = "https://github.com/grailbio/bazel-toolchain/releases/download/0.10.3/toolchains_llvm-0.10.3.tar.gz",
+)
+
+load("@toolchains_llvm//toolchain:deps.bzl", "bazel_toolchain_dependencies")
+
+bazel_toolchain_dependencies()
+
+load("@toolchains_llvm//toolchain:rules.bzl", "llvm_toolchain")
+
+llvm_toolchain(
+    name = "llvm_toolchain",
+    llvm_version = "15.0.6",
+    sysroot = {
+        "linux-x86_64": "@org_chromium_sysroot_linux_x64//:sysroot",
+    },
+)
+
+load("@llvm_toolchain//:toolchains.bzl", "llvm_register_toolchains")
+
+llvm_register_toolchains()
+
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+http_archive(
     name = "com_github_gflags_gflags",
     sha256 = "34af2f15cf7367513b352bdcd2493ab14ce43692d2dcd9dfc499492966c64dcf",
     strip_prefix = "gflags-2.2.2",
