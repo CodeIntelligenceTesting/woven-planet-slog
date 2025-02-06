@@ -3,13 +3,20 @@ Slog (reads "S-log") is a simple, fast, and cross-language structured logging. I
 
 # Fuzzing with CI Fuzz
 
+For fuzzing, we prepared a dev container setup. The setup and docker setup can be found in `.devcontainer`
+
 ## Spark
 Spark automatically selects the top functions to test and automatically creates fuzz test for them. These fuzz tests are then built and run until a given goal (target coverage or number of tests) is reached.
 ```
-cifuzz spark --build-dir . --build-jobs=0 --candidate-excludes="external/**;bazel-out/**" --usage-excludes="external/**;bazel-out/**" --build-file cifuzz-spark/BUILD.bazel
+cifuzz spark --build-dir . --candidate-excludes="external/**;bazel-out/**" --usage-excludes="external/**;bazel-out/**" --build-file cifuzz-spark/BUILD.bazel
 ```
 
 For a verbose output, you can use the `-v` flag
+
+Spark needs a compilation database which you can generated with the following command:
+```
+bazel run @hedron_compile_commands//:refresh_all
+```
 
 ## Fuzzing candidates
 To get the most important functions to test/fuzz:
